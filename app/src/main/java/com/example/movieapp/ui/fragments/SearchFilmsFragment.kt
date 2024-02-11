@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 class SearchFilmsFragment : Fragment(R.layout.fragment_search_films) {
     lateinit var viewModel: FilmsViewModel
     lateinit var filmsAdapter: FilmsAdapter
-    var filmsFoundOnPage = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
