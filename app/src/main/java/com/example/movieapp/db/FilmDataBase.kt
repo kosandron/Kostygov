@@ -9,7 +9,7 @@ import com.example.movieapp.models.Film
 
 @Database(
     entities = [Film::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(CountryConverter::class, GenreConverter::class)
@@ -30,6 +30,8 @@ abstract class FilmDataBase : RoomDatabase() {
                 context.applicationContext,
                 FilmDataBase::class.java,
                 "films_db.db"
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
     }
 }

@@ -1,7 +1,6 @@
 package com.example.movieapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
@@ -51,7 +50,6 @@ class SearchFilmsFragment : Fragment(R.layout.fragment_search_films) {
                 delay(SEARCH_FILMS_TIME_DELAY)
                 editable?.let {
                     if (editable.toString().isNotEmpty()) {
-                        Log.d("Editable text", editable.toString())
                         viewModel.searchFilms(editable.toString())
                     }
                 }
@@ -66,7 +64,6 @@ class SearchFilmsFragment : Fragment(R.layout.fragment_search_films) {
                         filmsAdapter.differ.submitList(filmsResponse.films?.toList())
                         val totalPages = filmsResponse.pagesCount
                         isLastPage = viewModel.searchFilmsPage == totalPages
-                        Log.d("Success find", filmsResponse.films?.size.toString())
                         if (isLastPage) {
                             rvSearchFilms.setPadding(0,0,0,0)
                         }
@@ -76,7 +73,6 @@ class SearchFilmsFragment : Fragment(R.layout.fragment_search_films) {
                     hideProgressBar()
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occured:  $message", Toast.LENGTH_LONG).show()
-                        Log.e("Search films", "An error occured:  $message")
                     }
                     response.data?.let {  filmsResponse ->
                         filmsAdapter.differ.submitList(filmsResponse.films)
@@ -118,9 +114,6 @@ class SearchFilmsFragment : Fragment(R.layout.fragment_search_films) {
             val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
             val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
-            Log.d("firstVisibleItemPositi", firstVisibleItemPosition.toString())
-            Log.d("visibleItemCount", visibleItemCount.toString())
-            Log.d("totalItemCount", totalItemCount.toString())
 
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
@@ -129,16 +122,8 @@ class SearchFilmsFragment : Fragment(R.layout.fragment_search_films) {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBegginning &&
                     isTotalMoreThanVisible && isScrolling
 
-            Log.d("isNotLoadingAndNotLast", isNotLoadingAndNotLastPage.toString())
-            Log.d("isAtLastItem", isAtLastItem.toString())
-            Log.d("isNotAtBegginning", isNotAtBegginning.toString())
-            Log.d("isTotalMoreThanVisible", isTotalMoreThanVisible.toString())
-            Log.d("shouldPaginate", shouldPaginate.toString())
-            Log.d("adapterListSize", filmsAdapter.differ.currentList.size.toString())
             if (shouldPaginate) {
                 viewModel.searchFilms(etSearch.text.toString())
-                Log.d("adapterListSize", filmsAdapter.differ.currentList.size.toString())
-               // filmsAdapter.notifyDataSetChanged()
                 isScrolling = false
             }
         }

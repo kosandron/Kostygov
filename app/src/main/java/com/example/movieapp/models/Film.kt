@@ -14,6 +14,7 @@ data class Film(
     @TypeConverters(CountryConverter::class) val countries: List<Country>,
     @TypeConverters(GenreConverter::class) val genres: List<Genre>,
     val imdbId: String?,
+    val filmId: Int?,
     val kinopoiskId: Int?,
     val nameEn: String?,
     val nameOriginal: String?,
@@ -23,5 +24,6 @@ data class Film(
     val ratingImdb: Double?,
     val ratingKinopoisk: Double?,
     val type: String?,
-    val year: Int?
+    val year: Int?,
+    val description: String?
 ) : Serializable

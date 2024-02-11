@@ -1,6 +1,5 @@
 package com.example.movieapp.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
     inner class FilmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
-        Log.d("Adapter", "onCreateViewHolder")
         return FilmViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_film_preview,
@@ -27,11 +25,9 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
-        Log.d("Adapter", "onBindViewHolder")
         val film = differ.currentList[position]
         holder.itemView.apply {
             Glide.with(this).load(film.posterUrlPreview).into(ivFilmImage)
-            tvRating.text = film.ratingImdb?.toString() ?: film.ratingKinopoisk?.toString()
             tvTitle.text = film.nameEn ?: film.nameRu
             tvYear.text = film.year.toString()
             setOnClickListener {

@@ -11,6 +11,8 @@ class FilmsRepository(val db: FilmDataBase) {
     suspend fun searchFilms(searchQuery: String, pageNumber: Int) =
         RetrofitInstance.api.searchForFilms(searchQuery, pageNumber)
 
+    suspend fun getFilmById(id: Int) = RetrofitInstance.api.getFilmById(id)
+
     suspend fun upsert(film: Film) = db.getFilmDao().upsert(film)
 
     fun getSavedFilms() = db.getFilmDao().getAllFilms()

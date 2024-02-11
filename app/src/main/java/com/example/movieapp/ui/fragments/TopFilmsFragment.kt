@@ -1,7 +1,6 @@
 package com.example.movieapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
@@ -43,21 +42,17 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                     hideProgressBar()
                     response.data?.let { filmResponse ->
                         filmsAdapter.differ.submitList(filmResponse.films?.toList())
-                        Log.d("Answer", "TopList")
                         val totalPages = filmResponse.pagesCount
-                        Log.d("Answer count", filmResponse.films?.size.toString())
                         isLastPage = viewModel.topFilmsPage == totalPages
                         if (isLastPage) {
                             rvTopFilms.setPadding(0,0,0,0)
                         }
-                        //filmsAdapter.differ.submitList(filmsResponse.films)
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occured:  $message", Toast.LENGTH_LONG).show()
-                        Log.e("Top films", "An error occured:  $message")
                     }
                 }
                 is Resource.Loading -> showProgressBar()

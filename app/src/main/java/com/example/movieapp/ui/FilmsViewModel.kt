@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -32,26 +31,29 @@ class FilmsViewModel(
         var newSearchQuery:String? = null
         var oldSearchQuery:String? = null
 
+        val filmById: MutableLiveData<Resource<Film>> = MutableLiveData()
+        var filmByIdResponse: Film? = null
+
         init {
-            Log.d("ViewModel", "Start Call!")
             getFilmsCollection("TOP_100_POPULAR_FILMS")
-            Log.d("ViewModel", "End Call!")
         }
 
         fun getFilmsCollection(filmCollection: String = "TOP_100_POPULAR_FILMS") = viewModelScope.launch {
-            safeBreakingCall(filmCollection)
+            safeTopFilmsCall(filmCollection)
         }
 
         fun searchFilms(searchQuery: String) = viewModelScope.launch {
             safeSearchCall(searchQuery)
         }
 
+        fun getFilmById(id: Int) = viewModelScope.launch {
+            safeGetFilmByIdCall(id)
+        }
+
         private fun handleTopFilmsResponse(response: Response<FilmsResponse>) : Resource<FilmsResponse> {
             if (response.isSuccessful) {
-                Log.d("Answer", response.body()?.toString() ?: "Empty")
                 response.body()?.let {  resultResponse ->
                     topFilmsPage++
-                    Log.d("Answer", response.body()?.toString() ?: "Empty")
                     if (topFilmsResponse == null) {
                         topFilmsResponse = resultResponse
                     } else {
@@ -70,7 +72,6 @@ class FilmsViewModel(
 
         private fun handleSearchFilmsResponse(response: Response<FilmsResponse>) : Resource<FilmsResponse> {
             if (response.isSuccessful) {
-                Log.d("Answer find body: ", response.body()?.toString() ?: "Empty")
                 response.body()?.let {  resultResponse ->
                     searchFilmsPage++
                     if(searchFilmsResponse == null || newSearchQuery != oldSearchQuery) {
@@ -90,6 +91,16 @@ class FilmsViewModel(
             return Resource.Error(response.message())
         }
 
+    private fun handleGetFilmByIdResponse(response: Response<Film>) : Resource<Film> {
+        if (response.isSuccessful) {
+            response.body()?.let {  resultResponse ->
+                filmByIdResponse = resultResponse
+                return Resource.Success(filmByIdResponse ?: resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
         fun saveFilm(film: Film) = viewModelScope.launch {
             filmsRepository.upsert(film)
         }
@@ -100,16 +111,14 @@ class FilmsViewModel(
             filmsRepository.deleteFilm(film)
         }
 
-        private suspend fun safeBreakingCall(filmCollection: String = "TOP_100_POPULAR_FILMS") {
+        private suspend fun safeTopFilmsCall(filmCollection: String = "TOP_100_POPULAR_FILMS") {
             topFilms.postValue(Resource.Loading())
             try {
                 if (hasInternetConnection()) {
-                    Log.d("ViewModel", "Response start!")
                     val response = filmsRepository.getTopFilms(topFilmsPage, filmCollection)
-                    Log.d("Answer", response.body()?.toString() ?: "Empty")
                     topFilms.postValue(handleTopFilmsResponse(response))
                 } else {
-                    topFilms.postValue((Resource.Error("No internet connection")))
+                    topFilms.postValue((Resource.Error("No internet connection!")))
                 }
             } catch (t: Throwable) {
                 when(t) {
@@ -136,6 +145,23 @@ class FilmsViewModel(
                 }
             }
         }
+
+    private suspend fun safeGetFilmByIdCall(id: Int) {
+        filmById.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = filmsRepository.getFilmById(id)
+                filmById.postValue(handleGetFilmByIdResponse(response))
+            } else {
+                filmById.postValue((Resource.Error("No internet connection")))
+            }
+        } catch (t: Throwable) {
+            when(t) {
+                is IOException -> filmById.postValue(Resource.Error("Network Failure"))
+                else -> filmById.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
 
         private fun hasInternetConnection(): Boolean {
             val connectivityManager = getApplication<FilmsApplication>().getSystemService(

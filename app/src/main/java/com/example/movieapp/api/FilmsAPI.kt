@@ -1,8 +1,10 @@
 package com.example.movieapp.api
 
+import com.example.movieapp.models.Film
 import com.example.movieapp.models.FilmsResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface FilmsAPI {
@@ -17,4 +19,9 @@ interface FilmsAPI {
         @Query("keyword") keyword: String,
         @Query("page") page: Int = 1
     ): Response<FilmsResponse>
+
+    @GET("v2.2/films/{id}")
+    suspend fun getFilmById(
+        @Path("id") id: Int
+    ) : Response<Film>
 }
