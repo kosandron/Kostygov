@@ -5,4 +5,7 @@
     <string name="saved_films">Сохраненное</string>
     <string name="search">Поиск</string>
     <string name="search_hint">Искать...</string>
+    <string name="lands">"Страны: "</string>
+    <string name="genres">"Жанры: "</string>
+    <string name="description">"Описание: "</string>
 </resources>

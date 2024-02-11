@@ -1,9 +1,7 @@
 package com.example.movieapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -14,9 +12,7 @@ import com.example.movieapp.ui.FilmActivity
 import com.example.movieapp.ui.FilmsViewModel
 import com.example.movieapp.utils.Resource
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_films.*
 import kotlinx.android.synthetic.main.fragment_film.*
-import kotlinx.android.synthetic.main.fragment_top_films.*
 
 class FilmFragment : Fragment(R.layout.fragment_film) {
     lateinit var viewModel: FilmsViewModel
@@ -38,9 +34,9 @@ class FilmFragment : Fragment(R.layout.fragment_film) {
                             .centerCrop()
                             .into(movie_image)
                         tvFilmName.text = filmResponse?.nameEn ?: filmResponse?.nameRu
-                        tvGenre.text = "Genres: " + filmResponse.genres.toString().substring(1, filmResponse.genres.toString().length - 1)
-                        tvLand.text = "Countries: " + filmResponse.countries.toString().substring(1, filmResponse.countries.toString().length - 1)
-                        tvDescription.text = "Описание: " + filmResponse.description
+                        tvGenre.text = getString(R.string.genres) + filmResponse.genres.toString().substring(1, filmResponse.genres.toString().length - 1)
+                        tvLand.text = getString(R.string.lands) + filmResponse.countries.toString().substring(1, filmResponse.countries.toString().length - 1)
+                        tvDescription.text = getString(R.string.description) + filmResponse.description
                     }
                 }
                 is Resource.Error -> {
@@ -50,9 +46,9 @@ class FilmFragment : Fragment(R.layout.fragment_film) {
                         .centerCrop()
                         .into(movie_image)
                     tvFilmName.text = film?.nameEn ?: film?.nameRu
-                    tvGenre.text = "Genres: " + film?.genres.toString().substring(1, film?.genres.toString().length - 1)
-                    tvLand.text = "Countries: " + film?.countries.toString().substring(1, film?.countries.toString().length - 1)
-                    tvDescription.text = "Описание: " + film?.description
+                    tvGenre.text = getString(R.string.genres) + film?.genres.toString().substring(1, film?.genres.toString().length - 1)
+                    tvLand.text = getString(R.string.lands) + film?.countries.toString().substring(1, film?.countries.toString().length - 1)
+                    tvDescription.text = getString(R.string.description) + film?.description
                 }
                 is Resource.Loading -> {
                     film = args.film
@@ -61,9 +57,9 @@ class FilmFragment : Fragment(R.layout.fragment_film) {
                         .centerCrop()
                         .into(movie_image)
                     tvFilmName.text = film?.nameEn ?: film?.nameRu
-                    tvGenre.text = "Genres: " + film?.genres.toString().substring(1, film?.genres.toString().length - 1)
-                    tvLand.text = "Countries: " + film?.countries.toString().substring(1, film?.countries.toString().length - 1)
-                    tvDescription.text = "Описание: " + film?.description
+                    tvGenre.text = getString(R.string.genres) + film?.genres.toString().substring(1, film?.genres.toString().length - 1)
+                    tvLand.text = getString(R.string.lands) + film?.countries.toString().substring(1, film?.countries.toString().length - 1)
+                    tvDescription.text = getString(R.string.description) + film?.description
                 }
             }
 
