@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Кинопоиск</string>
+    <string name="top_films">Популярное</string>
+    <string name="saved_films">Сохраненное</string>
+    <string name="search">Поиск</string>
+    <string name="search_hint">Искать...</string>
+</resources>

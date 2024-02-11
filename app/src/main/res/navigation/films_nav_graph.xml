@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/films_nav_graph"
+    app:startDestination="@id/topFilmsFragment">
+
+    <fragment
+        android:id="@+id/topFilmsFragment"
+        android:name="com.example.movieapp.ui.fragments.TopFilmsFragment"
+        android:label="TopFilmsFragment" >
+        <action
+            android:id="@+id/action_topFilmsFragment_to_filmFragment"
+            app:destination="@id/filmFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/filmFragment"
+        android:name="com.example.movieapp.ui.fragments.FilmFragment"
+        android:label="FilmFragment" >
+        <argument
+            android:name="film"
+            app:argType="com.example.movieapp.models.Film" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedFilmsFragment"
+        android:name="com.example.movieapp.ui.fragments.SavedFilmsFragment"
+        android:label="SavedFilmsFragment" >
+        <action
+            android:id="@+id/action_savedFilmsFragment_to_filmFragment"
+            app:destination="@id/filmFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/searchFilmsFragment"
+        android:name="com.example.movieapp.ui.fragments.SearchFilmsFragment"
+        android:label="SearchFilmsFragment" >
+        <action
+            android:id="@+id/action_searchFilmsFragment_to_filmFragment"
+            app:destination="@id/filmFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+</navigation>
